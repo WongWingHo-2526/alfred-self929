@@ -1,12 +1,11 @@
 {
   "name": "Flask App",
   "image": "mcr.microsoft.com/devcontainers/python:3.12",
-  "postCreateCommand": "cd pegasus_computer_store && pip install -r requirements.txt",
+  "workspaceFolder": "/workspaces/alfred-self929/pegasus_computer_store",
+  "postCreateCommand": "pip install -r requirements.txt",
   "customizations": {
     "vscode": {
-      "extensions": [
-        "ms-python.python"
-      ]
+      "extensions": ["ms-python.python"]
     }
   }
 }
