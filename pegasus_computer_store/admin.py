@@ -366,3 +366,25 @@ def delete_category(category_id):
         db.session.commit()
         flash('分類已刪除', 'success')
     return redirect(url_for('admin.admin_categories'))
+
+@admin_bp.route('/categories/update', methods=['POST'])
+@login_required
+@admin_required
+def update_category():
+    category_id = request.form.get('category_id')
+    category = Category.query.get_or_404(category_id)
+
+    category.name = request.form.get('name')
+    category.slug = request.form.get('slug')
+    parent_id = request.form.get('parent_id')
+    category.parent_id = int(parent_id) if parent_id and parent_id != '' else None
+    category.sort_order = request.form.get('sort_order', 0, type=int)
+    category.is_active = request.form.get('is_active') == '1'
+
+    # 防止将分类自身设为上级
+    if category.parent_id == category.id:
+        category.parent_id = None
+
+    db.session.commit()
+    flash(f'分類 {category.name} 已更新', 'success')
+    return redirect(url_for('admin.admin_categories'))

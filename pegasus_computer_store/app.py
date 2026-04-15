@@ -514,6 +514,10 @@ def remove_session_cart_item(product_id):
     session['cart'] = cart
     return jsonify({'success': True})
 
+
+
+
+
 # ---------- 初始化数据库和默认数据 ----------
 with app.app_context():
     db.create_all()
