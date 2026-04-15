@@ -17,49 +17,49 @@ def add_peripheral_products():
     with app.app_context():
         peripheral_category = Category.query.filter_by(slug='peripheral').first()
         if not peripheral_category:
-            print("❌ 未找到 '外设' 分类，尝试创建...")
-            peripheral_category = Category(name='外设', slug='peripheral', sort_order=9, is_active=True)
+            print("❌ 未找到 '外設' 分類，嘗試創建...")
+            peripheral_category = Category(name='外設', slug='peripheral', sort_order=9, is_active=True)
             db.session.add(peripheral_category)
             db.session.commit()
-            print("✅ 已创建 外设 分类")
+            print("✅ 已創建 外設 分類")
 
         products = [
             {
-                "name": "Logitech G Pro X Superlight 2 无线鼠标",
+                "name": "Logitech G Pro X Superlight 2 無線鼠標",
                 "brand": "Logitech",
                 "price": 1099.00,
                 "original_price": 1299.00,
                 "stock": 30,
                 "sku": "LOG-GPROX-SL2",
-                "short_description": "60g超轻量，无线，HERO 2传感器",
-                "description": "电竞级无线鼠标，约60g重量，32000 DPI，最长95小时续航。",
-                "specifications": '{"重量":"60g","连接":"无线2.4GHz","DPI":"32000","按键":"5个","续航":"95小时"}',
+                "short_description": "60g超輕量，無線，HERO 2傳感器",
+                "description": "電競級無線鼠標，約60g重量，32000 DPI，最長95小時續航。",
+                "specifications": '{"重量":"60g","連接":"無線2.4GHz","DPI":"32000","按鍵":"5個","續航":"95小時"}',
                 "is_featured": True,
                 "is_new": True
             },
             {
-                "name": "Keychron K2 Pro 机械键盘",
+                "name": "Keychron K2 Pro 機械鍵盤",
                 "brand": "Keychron",
                 "price": 699.00,
                 "original_price": 799.00,
                 "stock": 25,
                 "sku": "KEY-K2-PRO",
-                "short_description": "75%布局，蓝牙/有线，热插拔，Gasket结构",
-                "description": "Mac/Win双系统适配，RGB背光，K Pro轴体，QMK/VIA开源改键。",
-                "specifications": '{"布局":"75%","连接":"蓝牙5.1+有线","轴体":"热插拔","电池":"4000mAh","键帽":"PBT双色"}',
+                "short_description": "75%布局，藍牙/有線，熱插拔，Gasket結構",
+                "description": "Mac/Win雙系統適配，RGB背光，K Pro軸體，QMK/VIA開源改鍵。",
+                "specifications": '{"布局":"75%","連接":"藍牙5.1+有線","軸體":"熱插拔","電池":"4000mAh","鍵帽":"PBT雙色"}',
                 "is_featured": True,
                 "is_new": True
             },
             {
-                "name": "HyperX Cloud II 电竞耳机",
+                "name": "HyperX Cloud II 電競耳機",
                 "brand": "HyperX",
                 "price": 599.00,
                 "original_price": 699.00,
                 "stock": 40,
                 "sku": "HX-CLOUD-II",
-                "short_description": "7.1虚拟环绕声，53mm驱动单元",
-                "description": "虚拟7.1环绕声，53mm驱动单元，记忆海绵耳罩，可拆卸麦克风。",
-                "specifications": '{"类型":"头戴式","连接":"USB/3.5mm","驱动单元":"53mm","频率":"15Hz-25kHz","重量":"320g"}',
+                "short_description": "7.1虛擬環繞聲，53mm驅動單元",
+                "description": "虛擬7.1環繞聲，53mm驅動單元，記憶海綿耳罩，可拆卸麥克風。",
+                "specifications": '{"類型":"頭戴式","連接":"USB/3.5mm","驅動單元":"53mm","頻率":"15Hz-25kHz","重量":"320g"}',
                 "is_featured": True,
                 "is_new": False
             }
@@ -89,10 +89,10 @@ def add_peripheral_products():
             )
             db.session.add(product)
             added += 1
-            print(f"✅ 已添加外设: {p['name']}")
+            print(f"✅ 已添加外設: {p['name']}")
 
         db.session.commit()
-        print(f"\n🎉 成功添加 {added} 个外设商品！")
+        print(f"\n🎉 成功添加 {added} 個外設商品！")
 
 if __name__ == "__main__":
     add_peripheral_products()

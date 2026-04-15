@@ -17,11 +17,11 @@ def add_psu_products():
     with app.app_context():
         psu_category = Category.query.filter_by(slug='psu').first()
         if not psu_category:
-            print("❌ 未找到 '电源' 分类，尝试创建...")
-            psu_category = Category(name='电源', slug='psu', sort_order=6, is_active=True)
+            print("❌ 未找到 '電源' 分類，嘗試創建...")
+            psu_category = Category(name='電源', slug='psu', sort_order=6, is_active=True)
             db.session.add(psu_category)
             db.session.commit()
-            print("✅ 已创建 电源 分类")
+            print("✅ 已創建 電源 分類")
 
         products = [
             {
@@ -31,9 +31,9 @@ def add_psu_products():
                 "original_price": 1199.00,
                 "stock": 25,
                 "sku": "COR-RM850E",
-                "short_description": "850W 80Plus金牌，全模组，静音风扇",
-                "description": "高品质电源，全模组设计，120mm静音风扇，支持现代显卡，七年质保。",
-                "specifications": '{"功率":"850W","效率":"80Plus Gold","模组化":"全模组","风扇":"120mm","保护":"OVP/UVP/SCP/OPP/OTP"}',
+                "short_description": "850W 80Plus金牌，全模組，靜音風扇",
+                "description": "高品質電源，全模組設計，120mm靜音風扇，支持現代顯卡，七年質保。",
+                "specifications": '{"功率":"850W","效率":"80Plus Gold","模組化":"全模組","風扇":"120mm","保護":"OVP/UVP/SCP/OPP/OTP"}',
                 "is_featured": True,
                 "is_new": True
             },
@@ -44,9 +44,9 @@ def add_psu_products():
                 "original_price": 999.00,
                 "stock": 30,
                 "sku": "SEA-FOCUS-750",
-                "short_description": "750W 80Plus金牌，全模组，全日系电容",
-                "description": "稳定高效的电源，全日系电容，智能温控风扇，十年质保。",
-                "specifications": '{"功率":"750W","效率":"80Plus Gold","模组化":"全模组","风扇":"120mm","保护":"OPP/OVP/UVP/SCP/OCP/OTP"}',
+                "short_description": "750W 80Plus金牌，全模組，全日系電容",
+                "description": "穩定高效的電源，全日系電容，智能溫控風扇，十年質保。",
+                "specifications": '{"功率":"750W","效率":"80Plus Gold","模組化":"全模組","風扇":"120mm","保護":"OPP/OVP/UVP/SCP/OCP/OTP"}',
                 "is_featured": True,
                 "is_new": True
             },
@@ -57,9 +57,9 @@ def add_psu_products():
                 "original_price": 499.00,
                 "stock": 50,
                 "sku": "CM-MWE550",
-                "short_description": "550W 80Plus铜牌，入门级性价比",
-                "description": "经济型电源，适合办公和入门游戏主机，三年质保。",
-                "specifications": '{"功率":"550W","效率":"80Plus Bronze","模组化":"非模组","风扇":"120mm","保护":"OVP/UVP/OPP/SCP"}',
+                "short_description": "550W 80Plus銅牌，入門級性價比",
+                "description": "經濟型電源，適合辦公和入門遊戲主機，三年質保。",
+                "specifications": '{"功率":"550W","效率":"80Plus Bronze","模組化":"非模組","風扇":"120mm","保護":"OVP/UVP/OPP/SCP"}',
                 "is_featured": False,
                 "is_new": False
             }
@@ -89,10 +89,10 @@ def add_psu_products():
             )
             db.session.add(product)
             added += 1
-            print(f"✅ 已添加电源: {p['name']}")
+            print(f"✅ 已添加電源: {p['name']}")
 
         db.session.commit()
-        print(f"\n🎉 成功添加 {added} 个电源商品！")
+        print(f"\n🎉 成功添加 {added} 個電源商品！")
 
 if __name__ == "__main__":
     add_psu_products()

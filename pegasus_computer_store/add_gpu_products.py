@@ -17,7 +17,7 @@ def add_gpu_products():
     with app.app_context():
         gpu_category = Category.query.filter_by(slug='gpu').first()
         if not gpu_category:
-            print("❌ 未找到 '显卡' 分类，请检查数据库")
+            print("❌ 未找到 '顯卡' 分類，請檢查數據庫")
             return
 
         products = [
@@ -28,9 +28,9 @@ def add_gpu_products():
                 "original_price": 16999.00,
                 "stock": 8,
                 "sku": "NVIDIA-RTX4090",
-                "short_description": "24GB GDDR6X，DLSS 3，旗舰游戏显卡",
-                "description": "NVIDIA Ada Lovelace架构，16384个CUDA核心，24GB GDDR6X显存。",
-                "specifications": '{"显存":"24GB GDDR6X","核心":"16384","功耗":"450W"}',
+                "short_description": "24GB GDDR6X，DLSS 3，旗艦遊戲顯卡",
+                "description": "NVIDIA Ada Lovelace架構，16384個CUDA核心，24GB GDDR6X顯存。",
+                "specifications": '{"顯存":"24GB GDDR6X","核心":"16384","功耗":"450W"}',
                 "is_featured": True,
                 "is_new": True
             },
@@ -41,9 +41,9 @@ def add_gpu_products():
                 "original_price": 7499.00,
                 "stock": 15,
                 "sku": "NVIDIA-RTX4070TI",
-                "short_description": "12GB GDDR6X，高性能2K游戏卡",
-                "description": "适合1440p高刷新率游戏，支持DLSS 3。",
-                "specifications": '{"显存":"12GB GDDR6X","核心":"7680","功耗":"285W"}',
+                "short_description": "12GB GDDR6X，高性能2K遊戲卡",
+                "description": "適合1440p高刷新率遊戲，支持DLSS 3。",
+                "specifications": '{"顯存":"12GB GDDR6X","核心":"7680","功耗":"285W"}',
                 "is_featured": True,
                 "is_new": True
             },
@@ -54,9 +54,9 @@ def add_gpu_products():
                 "original_price": 9999.00,
                 "stock": 12,
                 "sku": "AMD-RX7900XTX",
-                "short_description": "24GB GDDR6，RDNA 3架构",
-                "description": "AMD旗舰显卡，支持AV1编码，适合4K游戏。",
-                "specifications": '{"显存":"24GB GDDR6","核心":"6144","功耗":"355W"}',
+                "short_description": "24GB GDDR6，RDNA 3架構",
+                "description": "AMD旗艦顯卡，支持AV1編碼，適合4K遊戲。",
+                "specifications": '{"顯存":"24GB GDDR6","核心":"6144","功耗":"355W"}',
                 "is_featured": True,
                 "is_new": True
             }
@@ -86,10 +86,10 @@ def add_gpu_products():
             )
             db.session.add(product)
             added += 1
-            print(f"✅ 已添加显卡: {p['name']}")
+            print(f"✅ 已添加顯卡: {p['name']}")
 
         db.session.commit()
-        print(f"\n🎉 成功添加 {added} 个显卡商品！")
+        print(f"\n🎉 成功添加 {added} 個顯卡商品！")
 
 if __name__ == "__main__":
     add_gpu_products()

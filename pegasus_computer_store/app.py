@@ -1,4 +1,4 @@
-# app.py - 完整版，包含所有路由和辅助函数
+# app.py - 完整版，包含所有路由和輔助函數
 import os
 import uuid
 import json
@@ -14,34 +14,34 @@ from admin import admin_bp
 app = Flask(__name__)
 app.config.from_object(Config)
 
-# 初始化数据库
+# 初始化數據庫
 db.init_app(app)
 
 # Flask-Login 配置
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
-login_manager.login_message = '请先登录'
+login_manager.login_message = '請先登錄'
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-# 注册后台蓝图
+# 注冊後台藍圖
 app.register_blueprint(admin_bp, url_prefix='/admin')
 
-# ---------- 自定义 Jinja2 过滤器 ----------
+# ---------- 自定義 Jinja2 過濾器 ----------
 @app.template_filter('from_json')
 def from_json_filter(value):
-    """将 JSON 字符串解析为 Python 字典"""
+    """將 JSON 字符串解析為 Python 字典"""
     try:
         return json.loads(value) if value else {}
     except:
         return {}
 
-# ---------- 购物车辅助函数 ----------
+# ---------- 購物車輔助函數 ----------
 def get_cart_count():
-    """获取购物车商品总数"""
+    """獲取購物車商品總數"""
     if current_user.is_authenticated:
         return CartItem.query.filter_by(user_id=current_user.id).count()
     else:
@@ -49,7 +49,7 @@ def get_cart_count():
         return sum(cart.values())
 
 def get_cart_items():
-    """获取购物车详情和总金额"""
+    """獲取購物車詳情和總金額"""
     items = []
     total = 0
     if current_user.is_authenticated:
@@ -80,7 +80,7 @@ def get_cart_items():
     return items, total
 
 def merge_cart():
-    """登录时合并session购物车到数据库"""
+    """登錄時合並session購物車到數據庫"""
     if current_user.is_authenticated:
         session_cart = session.pop('cart', {})
         for product_id, quantity in session_cart.items():
@@ -93,13 +93,13 @@ def merge_cart():
                 db.session.add(cart_item)
         db.session.commit()
 
-# ---------- 首页路由 ----------
+# ---------- 首頁路由 ----------
 @app.route('/')
 def index():
     featured_products = Product.query.filter_by(is_featured=True, is_active=True).limit(8).all()
     new_products = Product.query.filter_by(is_new=True, is_active=True).order_by(Product.created_at.desc()).limit(8).all()
     categories = Category.query.filter_by(is_active=True).order_by(Category.sort_order).all()
-    # 最近浏览（Cookie）
+    # 最近瀏覽（Cookie）
     recent_product_ids = request.cookies.get('recent_products', '')
     recent_products = []
     if recent_product_ids:
@@ -146,13 +146,13 @@ def products():
                          sort=sort,
                          cart_count=get_cart_count())
 
-# ---------- 商品详情 ----------
+# ---------- 商品詳情 ----------
 @app.route('/product/<slug>')
 def product_detail(slug):
     product = Product.query.filter_by(slug=slug, is_active=True).first_or_404()
     product.view_count += 1
     db.session.commit()
-    # 记录浏览历史（Cookie）
+    # 記錄瀏覽歷史（Cookie）
     recent_ids = request.cookies.get('recent_products', '')
     ids_list = [str(product.id)] + [id for id in recent_ids.split(',') if id and id != str(product.id)]
     recent_products_cookie = ','.join(ids_list[:10])
@@ -174,7 +174,7 @@ def product_detail(slug):
     response.set_cookie('recent_products', recent_products_cookie, max_age=30*24*3600)
     return response
 
-# ---------- 购物车 ----------
+# ---------- 購物車 ----------
 @app.route('/cart')
 def cart():
     items, total = get_cart_items()
@@ -185,13 +185,13 @@ def add_to_cart(product_id):
     quantity = request.form.get('quantity', 1, type=int)
     product = Product.query.get_or_404(product_id)
     if quantity > product.stock:
-        flash(f'库存不足，仅剩 {product.stock} 件', 'danger')
+        flash(f'庫存不足，僅剩 {product.stock} 件', 'danger')
         return redirect(request.referrer or url_for('product_detail', slug=product.slug))
     if current_user.is_authenticated:
         cart_item = CartItem.query.filter_by(user_id=current_user.id, product_id=product_id).first()
         if cart_item:
             if cart_item.quantity + quantity > product.stock:
-                flash(f'库存不足，仅剩 {product.stock} 件', 'danger')
+                flash(f'庫存不足，僅剩 {product.stock} 件', 'danger')
                 return redirect(request.referrer or url_for('product_detail', slug=product.slug))
             cart_item.quantity += quantity
         else:
@@ -202,11 +202,11 @@ def add_to_cart(product_id):
         cart = session.get('cart', {})
         current_qty = cart.get(str(product_id), 0)
         if current_qty + quantity > product.stock:
-            flash(f'库存不足，仅剩 {product.stock} 件', 'danger')
+            flash(f'庫存不足，僅剩 {product.stock} 件', 'danger')
             return redirect(request.referrer or url_for('product_detail', slug=product.slug))
         cart[str(product_id)] = current_qty + quantity
         session['cart'] = cart
-    flash(f'已添加 {product.name} 到购物车', 'success')
+    flash(f'已添加 {product.name} 到購物車', 'success')
     return redirect(request.referrer or url_for('cart'))
 
 @app.route('/cart/update/<int:item_id>', methods=['POST'])
@@ -215,7 +215,7 @@ def update_cart(item_id):
     if current_user.is_authenticated:
         cart_item = CartItem.query.get_or_404(item_id)
         if cart_item.user_id != current_user.id:
-            flash('无权操作', 'danger')
+            flash('無權操作', 'danger')
             return redirect(url_for('cart'))
         if quantity <= 0:
             db.session.delete(cart_item)
@@ -229,7 +229,7 @@ def update_cart(item_id):
         else:
             cart[str(item_id)] = quantity
         session['cart'] = cart
-    flash('购物车已更新', 'success')
+    flash('購物車已更新', 'success')
     return redirect(url_for('cart'))
 
 @app.route('/cart/remove/<int:item_id>')
@@ -243,23 +243,23 @@ def remove_from_cart(item_id):
         cart = session.get('cart', {})
         cart.pop(str(item_id), None)
         session['cart'] = cart
-    flash('已从购物车移除', 'success')
+    flash('已從購物車移除', 'success')
     return redirect(url_for('cart'))
 
-# ---------- 结账和订单 ----------
+# ---------- 結賬和訂單 ----------
 @app.route('/checkout', methods=['GET', 'POST'])
 @login_required
 def checkout():
     items, total = get_cart_items()
     if not items:
-        flash('购物车为空', 'warning')
+        flash('購物車為空', 'warning')
         return redirect(url_for('products'))
     form = CheckoutForm()
     if form.validate_on_submit():
-        # 再次检查库存
+        # 再次檢查庫存
         for item in items:
             if item['product'].stock < item['quantity']:
-                flash(f'商品 {item["product"].name} 库存不足，仅剩 {item["product"].stock} 件', 'danger')
+                flash(f'商品 {item["product"].name} 庫存不足，僅剩 {item["product"].stock} 件', 'danger')
                 return redirect(url_for('cart'))
         order_number = f"PEG{datetime.now().strftime('%Y%m%d%H%M%S')}{current_user.id}{uuid.uuid4().hex[:4]}"
         order = Order(
@@ -290,7 +290,7 @@ def checkout():
         else:
             session.pop('cart', None)
         db.session.commit()
-        flash(f'订单已提交，订单号: {order_number}', 'success')
+        flash(f'訂單已提交，訂單號: {order_number}', 'success')
         return redirect(url_for('order_detail', order_id=order.id))
     if request.method == 'GET':
         form.shipping_name.data = f"{current_user.first_name} {current_user.last_name}".strip() or current_user.username
@@ -315,7 +315,7 @@ def orders():
 def order_detail(order_id):
     order = Order.query.get_or_404(order_id)
     if order.user_id != current_user.id and not current_user.is_admin:
-        flash('无权查看此订单', 'danger')
+        flash('無權查看此訂單', 'danger')
         return redirect(url_for('orders'))
     return render_template('order_detail.html', order=order, cart_count=get_cart_count())
 
@@ -324,9 +324,9 @@ def order_detail(order_id):
 def cancel_order(order_id):
     order = Order.query.get_or_404(order_id)
     if order.user_id != current_user.id:
-        return jsonify({'success': False, 'error': '无权限'}), 403
+        return jsonify({'success': False, 'error': '無權限'}), 403
     if order.status != 'pending':
-        return jsonify({'success': False, 'error': '订单状态不允许取消'}), 400
+        return jsonify({'success': False, 'error': '訂單狀態不允許取消'}), 400
     for item in order.items:
         product = Product.query.get(item.product_id)
         if product:
@@ -335,7 +335,7 @@ def cancel_order(order_id):
     db.session.commit()
     return jsonify({'success': True})
 
-# ---------- 用户认证 ----------
+# ---------- 用戶認證 ----------
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -346,7 +346,7 @@ def login():
         user = User.query.filter((User.username == username) | (User.email == username)).first()
         if user and user.check_password(form.password.data):
             if not user.is_active:
-                flash('账号已被禁用', 'danger')
+                flash('賬號已被禁用', 'danger')
                 return redirect(url_for('login'))
             login_user(user, remember=True)
             user.last_login = datetime.utcnow()
@@ -354,10 +354,10 @@ def login():
             db.session.commit()
             merge_cart()
             next_page = request.args.get('next')
-            flash(f'欢迎回来，{user.username}！', 'success')
+            flash(f'歡迎回來，{user.username}！', 'success')
             return redirect(next_page or url_for('index'))
         else:
-            flash('用户名或密码错误', 'danger')
+            flash('用戶名或密碼錯誤', 'danger')
     return render_template('login.html', form=form, cart_count=get_cart_count())
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -377,7 +377,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         login_user(user)
-        flash('注册成功！欢迎加入飛馬電腦', 'success')
+        flash('注冊成功！歡迎加入飛馬電腦', 'success')
         return redirect(url_for('index'))
     return render_template('register.html', form=form, cart_count=get_cart_count())
 
@@ -385,7 +385,7 @@ def register():
 @login_required
 def logout():
     logout_user()
-    flash('已退出登录', 'info')
+    flash('已退出登錄', 'info')
     return redirect(url_for('index'))
 
 @app.route('/profile', methods=['GET', 'POST'])
@@ -398,7 +398,7 @@ def profile():
         current_user.phone = form.phone.data
         current_user.address = form.address.data
         db.session.commit()
-        flash('个人资料已更新', 'success')
+        flash('個人資料已更新', 'success')
         return redirect(url_for('profile'))
     if request.method == 'GET':
         form.first_name.data = current_user.first_name
@@ -415,24 +415,24 @@ def change_password():
     new_password = request.form.get('new_password')
     confirm_password = request.form.get('confirm_password')
     if not current_password or not new_password or not confirm_password:
-        flash('请填写所有密码字段', 'danger')
+        flash('請填寫所有密碼字段', 'danger')
         return redirect(url_for('profile'))
     if new_password != confirm_password:
-        flash('新密码与确认密码不一致', 'danger')
+        flash('新密碼與確認密碼不一致', 'danger')
         return redirect(url_for('profile'))
     if len(new_password) < 6:
-        flash('新密码长度至少6位', 'danger')
+        flash('新密碼長度至少6位', 'danger')
         return redirect(url_for('profile'))
     if not current_user.check_password(current_password):
-        flash('当前密码错误', 'danger')
+        flash('當前密碼錯誤', 'danger')
         return redirect(url_for('profile'))
     current_user.set_password(new_password)
     db.session.commit()
-    flash('密码已更新，请重新登录', 'success')
+    flash('密碼已更新，請重新登錄', 'success')
     logout_user()
     return redirect(url_for('login'))
 
-# ---------- 商品评价 ----------
+# ---------- 商品評價 ----------
 @app.route('/product/<int:product_id>/review', methods=['POST'])
 @login_required
 def add_review(product_id):
@@ -441,22 +441,22 @@ def add_review(product_id):
     title = request.form.get('title', '')
     content = request.form.get('content', '')
     if not rating or rating < 1 or rating > 5:
-        flash('请选择评分', 'danger')
+        flash('請選擇評分', 'danger')
         return redirect(url_for('product_detail', slug=product.slug))
     if not content:
-        flash('请填写评价内容', 'danger')
+        flash('請填寫評價內容', 'danger')
         return redirect(url_for('product_detail', slug=product.slug))
     existing = Review.query.filter_by(user_id=current_user.id, product_id=product_id).first()
     if existing:
-        flash('您已经评价过此商品', 'warning')
+        flash('您已經評價過此商品', 'warning')
         return redirect(url_for('product_detail', slug=product.slug))
     review = Review(user_id=current_user.id, product_id=product_id, rating=rating, title=title, content=content, is_active=True)
     db.session.add(review)
     db.session.commit()
-    flash('感谢您的评价！', 'success')
+    flash('感謝您的評價！', 'success')
     return redirect(url_for('product_detail', slug=product.slug))
 
-# ---------- 收藏功能（可选） ----------
+# ---------- 收藏功能（可選） ----------
 @app.route('/api/wishlist/add', methods=['POST'])
 @login_required
 def add_to_wishlist():
@@ -469,21 +469,21 @@ def add_to_wishlist():
         return jsonify({'success': False, 'message': '商品不存在'}), 404
     existing = Wishlist.query.filter_by(user_id=current_user.id, product_id=product_id).first()
     if existing:
-        return jsonify({'success': False, 'message': '已收藏过该商品'})
+        return jsonify({'success': False, 'message': '已收藏過該商品'})
     wish = Wishlist(user_id=current_user.id, product_id=product_id)
     db.session.add(wish)
     db.session.commit()
-    return jsonify({'success': True, 'message': '已添加到收藏夹'})
+    return jsonify({'success': True, 'message': '已添加到收藏夾'})
 
-# ---------- API 购物车数量 ----------
+# ---------- API 購物車數量 ----------
 @app.route('/api/cart/count')
 def api_cart_count():
     return jsonify({'count': get_cart_count()})
 
-# ---------- Session 购物车 API（未登录用户）----------
+# ---------- Session 購物車 API（未登錄用戶）----------
 @app.route('/cart/session/update/<int:product_id>', methods=['POST'])
 def update_session_cart():
-    """更新 session 购物车中商品数量（未登录用户）"""
+    """更新 session 購物車中商品數量（未登錄用戶）"""
     data = request.get_json()
     quantity = data.get('quantity', 1)
     product_id = data.get('product_id')
@@ -497,7 +497,7 @@ def update_session_cart():
         cart[str(product_id)] = quantity
     session['cart'] = cart
     
-    # 重新计算总金额
+    # 重新計算總金額
     items, total = get_cart_items()
     return jsonify({
         'success': True,
@@ -508,7 +508,7 @@ def update_session_cart():
 
 @app.route('/cart/session/remove/<int:product_id>', methods=['POST'])
 def remove_session_cart_item(product_id):
-    """从 session 购物车删除商品（未登录用户）"""
+    """從 session 購物車刪除商品（未登錄用戶）"""
     cart = session.get('cart', {})
     cart.pop(str(product_id), None)
     session['cart'] = cart
@@ -518,20 +518,20 @@ def remove_session_cart_item(product_id):
 
 
 
-# ---------- 初始化数据库和默认数据 ----------
+# ---------- 初始化數據庫和默認數據 ----------
 with app.app_context():
     db.create_all()
     if Category.query.count() == 0:
         default_categories = [
-            ('cpu', 'CPU处理器', 1),
-            ('gpu', '显卡', 2),
+            ('cpu', 'CPU處理器', 1),
+            ('gpu', '顯卡', 2),
             ('motherboard', '主板', 3),
-            ('ram', '内存', 4),
-            ('ssd', '固态硬盘', 5),
-            ('psu', '电源', 6),
-            ('case', '机箱', 7),
-            ('cooler', '散热器', 8),
-            ('peripheral', '外设', 9),
+            ('ram', '內存', 4),
+            ('ssd', '固態硬盤', 5),
+            ('psu', '電源', 6),
+            ('case', '機箱', 7),
+            ('cooler', '散熱器', 8),
+            ('peripheral', '外設', 9),
         ]
         for slug, name, order in default_categories:
             cat = Category(name=name, slug=slug, sort_order=order, is_active=True)

@@ -1,4 +1,4 @@
-// 更新购物车数量
+// 更新購物車數量
 function updateCartQuantity(productId, quantity) {
     fetch(`/cart/update/${productId}`, {
         method: 'POST',
@@ -11,14 +11,14 @@ function updateCartQuantity(productId, quantity) {
     });
 }
 
-// 删除购物车商品
+// 刪除購物車商品
 function removeCartItem(itemId) {
-    if (confirm('确定要移除该商品吗？')) {
+    if (confirm('確定要移除該商品嗎？')) {
         window.location.href = `/cart/remove/${itemId}`;
     }
 }
 
-// 自动隐藏alert消息
+// 自動隱藏alert消息
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         document.querySelectorAll('.alert').forEach(alert => {
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 3000);
 });
 
-// 添加到购物车
+// 添加到購物車
 function addToCart(productId) {
     const quantity = document.getElementById('quantity')?.value || 1;
     fetch(`/cart/add/${productId}`, {

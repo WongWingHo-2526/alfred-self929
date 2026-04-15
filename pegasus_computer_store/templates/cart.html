@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}購物車 - 飛馬電腦{% endblock %}
+{% block title %}購物車 - 飛機電腦{% endblock %}
 
 {% block content %}
 <div class="container py-4">
@@ -37,7 +37,7 @@
                                         <td>HK${{ "%.2f"|format(item.product.price) }}</td>
                                         <td>
                                             {% if item.id is string and item.id.startswith('session_') %}
-                                                <!-- Session 购物车项（未登录）：使用 AJAX 更新 -->
+                                                <!-- Session 購物車項（未登錄）：使用 AJAX 更新 -->
                                                 <div class="d-flex align-items-center">
                                                     <input type="number" class="form-control form-control-sm quantity-input me-2" 
                                                            data-product-id="{{ item.product.id }}" 
@@ -49,7 +49,7 @@
                                                     </button>
                                                 </div>
                                             {% else %}
-                                                <!-- 数据库购物车项（已登录）：使用传统表单 -->
+                                                <!-- 數據庫購物車項（已登錄）：使用傳統表單 -->
                                                 <form method="POST" action="{{ url_for('update_cart', item_id=item.id) }}" class="d-flex align-items-center">
                                                     <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}" 
                                                            class="form-control form-control-sm w-auto me-2" style="width: 70px;">
@@ -124,7 +124,7 @@
 </div>
 
 <script>
-// 更新 session 购物车商品数量（未登录用户）
+// 更新 session 購物車商品數量（未登錄用戶）
 document.querySelectorAll('.update-cart-btn').forEach(btn => {
     btn.addEventListener('click', async function() {
         const productId = this.dataset.productId;
@@ -146,14 +146,14 @@ document.querySelectorAll('.update-cart-btn').forEach(btn => {
         });
         const data = await response.json();
         if (data.success) {
-            location.reload();  // 刷新页面更新总额和购物车数量
+            location.reload();  // 刷新頁面更新總額和購物車數量
         } else {
             alert(data.error || '更新失敗');
         }
     });
 });
 
-// 删除 session 购物车商品（未登录用户）
+// 刪除 session 購物車商品（未登錄用戶）
 document.querySelectorAll('.remove-session-item').forEach(btn => {
     btn.addEventListener('click', async function() {
         if (!confirm('確定移除該商品？')) return;
@@ -171,7 +171,7 @@ document.querySelectorAll('.remove-session-item').forEach(btn => {
     });
 });
 
-// 处理数量输入框的键盘事件（可选）
+// 處理數量輸入框的鍵盤事件（可選）
 document.querySelectorAll('.quantity-input').forEach(input => {
     input.addEventListener('change', function() {
         let val = parseInt(this.value);

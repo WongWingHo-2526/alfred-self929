@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}{{ product.name }} - 飛馬電腦{% endblock %}
+{% block title %}{{ product.name }} - 飛機電腦{% endblock %}
 
 {% block content %}
 <div class="container py-4">
-    <!-- 面包屑导航 -->
+    <!-- 面包屑導航 -->
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ url_for('index') }}">首頁</a></li>
@@ -17,7 +17,7 @@
     </nav>
 
     <div class="row">
-        <!-- 商品图片区域 -->
+        <!-- 商品圖片區域 -->
         <div class="col-md-5 mb-4">
             <div class="card shadow-sm">
                 <div class="card-body text-center p-4">
@@ -37,7 +37,7 @@
             {% endif %}
         </div>
 
-        <!-- 商品信息区域 -->
+        <!-- 商品信息區域 -->
         <div class="col-md-7">
             <div class="card shadow-sm">
                 <div class="card-body">
@@ -49,7 +49,7 @@
                     
                     <p class="text-muted small">SKU: {{ product.sku or 'N/A' }}</p>
                     
-                    <!-- 价格区域 -->
+                    <!-- 價格區域 -->
                     <div class="price-section my-3 p-3 bg-light rounded">
                         <div class="d-flex align-items-center">
                             <span class="text-danger fw-bold fs-1">HK${{ "%.2f"|format(product.price) }}</span>
@@ -60,7 +60,7 @@
                         </div>
                     </div>
                     
-                    <!-- 库存状态 -->
+                    <!-- 庫存狀態 -->
                     <div class="mb-3">
                         {% if product.stock > 0 %}
                             <span class="badge bg-success fs-6 p-2"><i class="bi bi-check-circle"></i> 現貨</span>
@@ -70,7 +70,7 @@
                         {% endif %}
                     </div>
                     
-                    <!-- 简短描述 -->
+                    <!-- 簡短描述 -->
                     {% if product.short_description %}
                     <div class="mb-3">
                         <h6>商品簡介</h6>
@@ -78,7 +78,7 @@
                     </div>
                     {% endif %}
                     
-                    <!-- 数量选择和加入购物车 -->
+                    <!-- 數量選擇和加入購物車 -->
                     {% if product.stock > 0 %}
                     <form method="POST" action="{{ url_for('add_to_cart', product_id=product.id) }}" class="row g-3 align-items-end">
                         <div class="col-auto">
@@ -109,7 +109,7 @@
         </div>
     </div>
 
-    <!-- 商品详细规格 -->
+    <!-- 商品詳細規格 -->
     <div class="row mt-4">
         <div class="col-12">
             <div class="card shadow-sm">
@@ -134,7 +134,7 @@
                         </div>
                     </div>
                     
-                    <!-- 规格参数 -->
+                    <!-- 規格參數 -->
                     <div class="tab-pane fade" id="specifications" role="tabpanel">
                         <div class="p-3">
                             {% if product.specifications %}
@@ -159,7 +159,7 @@
                         </div>
                     </div>
                     
-                    <!-- 评价区域 -->
+                    <!-- 評價區域 -->
                     <div class="tab-pane fade" id="reviews" role="tabpanel">
                         <div class="p-3">
                             {% if reviews %}
@@ -223,7 +223,7 @@
         </div>
     </div>
 
-    <!-- 相关商品推荐 -->
+    <!-- 相關商品推薦 -->
     {% if related_products %}
     <div class="row mt-5">
         <div class="col-12">
@@ -257,13 +257,13 @@
 </div>
 
 <style>
-/* 数量输入框样式 */
+/* 數量輸入框樣式 */
 input[type="number"]::-webkit-inner-spin-button, 
 input[type="number"]::-webkit-outer-spin-button {
     opacity: 1;
 }
 
-/* 星级评分样式 */
+/* 星級評分樣式 */
 .star-rating {
     display: flex;
     flex-direction: row-reverse;
@@ -293,7 +293,7 @@ input[type="number"]::-webkit-outer-spin-button {
 </style>
 
 <script>
-// 数量加减函数
+// 數量加減函數
 function decrementQuantity() {
     let input = document.getElementById('quantity');
     let value = parseInt(input.value);
@@ -311,7 +311,7 @@ function incrementQuantity() {
     }
 }
 
-// AJAX 加入购物车（可选增强）
+// AJAX 加入購物車（可選增強）
 function addToCartAsync(productId) {
     let quantity = document.getElementById('quantity').value;
     fetch('/api/cart/add', {
@@ -324,7 +324,7 @@ function addToCartAsync(productId) {
         let msgDiv = document.getElementById('cart-message');
         if (data.success) {
             msgDiv.innerHTML = '<div class="alert alert-success alert-dismissible fade show">' + data.message + '<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>';
-            // 更新购物车数量显示
+            // 更新購物車數量顯示
             document.querySelectorAll('.cart-badge').forEach(badge => {
                 if (data.cart_count > 0) {
                     badge.textContent = data.cart_count;
@@ -340,7 +340,7 @@ function addToCartAsync(productId) {
     });
 }
 
-// 收藏功能（需要后端支持）
+// 收藏功能（需要後端支持）
 function addToWishlist(productId) {
     fetch('/api/wishlist/add', {
         method: 'POST',
@@ -353,7 +353,7 @@ function addToWishlist(productId) {
     });
 }
 
-// 初始化 Tab 激活状态（如果有 hash）
+// 初始化 Tab 激活狀態（如果有 hash）
 if (window.location.hash) {
     let tab = document.querySelector(`button[data-bs-target="${window.location.hash}"]`);
     if (tab) {

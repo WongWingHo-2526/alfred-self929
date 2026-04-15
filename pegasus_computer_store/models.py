@@ -5,7 +5,7 @@ import json
 
 db = SQLAlchemy()
 
-# ============= Member 1: 用户认证与权限 (3张表) =============
+# ============= Member 1: 用戶認證與權限 (3張表) =============
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     
@@ -23,7 +23,7 @@ class User(db.Model, UserMixin):
     login_count = db.Column(db.Integer, default=0)
     is_active = db.Column(db.Boolean, default=True)
     
-    # 关系
+    # 關系
     orders = db.relationship('Order', backref='user', lazy=True, cascade='all, delete-orphan')
     reviews = db.relationship('Review', backref='user', lazy=True, cascade='all, delete-orphan')
     
@@ -43,7 +43,7 @@ class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
     description = db.Column(db.String(200))
-    permissions = db.Column(db.Text)  # JSON格式存储权限列表
+    permissions = db.Column(db.Text)  # JSON格式存儲權限列表
     
     def get_permissions(self):
         return json.loads(self.permissions) if self.permissions else []
@@ -61,7 +61,7 @@ class UserRole(db.Model):
     
     __table_args__ = (db.UniqueConstraint('user_id', 'role_id', name='unique_user_role'),)
 
-# ============= Member 2: 商品管理 (3张表) =============
+# ============= Member 2: 商品管理 (3張表) =============
 class Category(db.Model):
     __tablename__ = 'categories'
     
@@ -74,9 +74,9 @@ class Category(db.Model):
     is_active = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
-    # 自引用关系
+    # 自引用關系
     parent = db.relationship('Category', remote_side=[id], backref='children')
-    # 产品关系
+    # 產品關系
     products = db.relationship('Product', backref='category', lazy=True)
 
 class Product(db.Model):
@@ -88,13 +88,13 @@ class Product(db.Model):
     description = db.Column(db.Text)
     short_description = db.Column(db.String(500))
     price = db.Column(db.Float, nullable=False)
-    original_price = db.Column(db.Float)  # 原价，用于显示折扣
+    original_price = db.Column(db.Float)  # 原價，用於顯示折扣
     stock = db.Column(db.Integer, default=0)
     sku = db.Column(db.String(50), unique=True)
     image_url = db.Column(db.String(500))
     image_filename = db.Column(db.String(200))
     brand = db.Column(db.String(100))
-    specifications = db.Column(db.Text)  # JSON格式存储规格参数
+    specifications = db.Column(db.Text)  # JSON格式存儲規格參數
     is_featured = db.Column(db.Boolean, default=False)
     is_new = db.Column(db.Boolean, default=False)
     is_active = db.Column(db.Boolean, default=True)
@@ -102,10 +102,10 @@ class Product(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
-    # 外键
+    # 外鍵
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
     
-    # 关系
+    # 關系
     order_items = db.relationship('OrderItem', backref='product', lazy=True)
     cart_items = db.relationship('CartItem', backref='product', lazy=True)
     reviews = db.relationship('Review', backref='product', lazy=True, cascade='all, delete-orphan')
@@ -126,7 +126,7 @@ class ProductImage(db.Model):
     sort_order = db.Column(db.Integer, default=0)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-# ============= Member 3: 购物车与订单 (3张表) =============
+# ============= Member 3: 購物車與訂單 (3張表) =============
 class CartItem(db.Model):
     __tablename__ = 'cart_items'
     
@@ -158,7 +158,7 @@ class Order(db.Model):
     shipped_at = db.Column(db.DateTime)
     delivered_at = db.Column(db.DateTime)
     
-    # 关系
+    # 關系
     items = db.relationship('OrderItem', backref='order', lazy=True, cascade='all, delete-orphan')
 
 class OrderItem(db.Model):
@@ -167,12 +167,12 @@ class OrderItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
-    product_name = db.Column(db.String(200), nullable=False)  # 快照商品名称
-    product_price = db.Column(db.Float, nullable=False)       # 快照商品价格
+    product_name = db.Column(db.String(200), nullable=False)  # 快照商品名稱
+    product_price = db.Column(db.Float, nullable=False)       # 快照商品價格
     quantity = db.Column(db.Integer, nullable=False)
     subtotal = db.Column(db.Float, nullable=False)
 
-# ============= Member 4: 评价与浏览记录 (3张表) =============
+# ============= Member 4: 評價與瀏覽記錄 (3張表) =============
 class Review(db.Model):
     __tablename__ = 'reviews'
     
