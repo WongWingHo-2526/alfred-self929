@@ -1,17 +1,5 @@
 {
-  "name": "Flask App",
-  "image": "mcr.microsoft.com/devcontainers/python:3.12",
-  "workspaceFolder": "/workspaces/alfred-self929/pegasus_computer_store",
-  "postCreateCommand": "pip install -r requirements.txt",
-  "customizations": {
-    "vscode": {
-      "extensions": ["ms-python.python"]
-    }
-  }
-}
-
-{
-  "name": "Flask App",
+  "name": "Pegasus Computer Store",
   "image": "mcr.microsoft.com/devcontainers/python:3.12",
   "workspaceFolder": "/workspaces/alfred-self929/pegasus_computer_store",
   "postCreateCommand": "pip install -r requirements.txt",
@@ -25,7 +13,9 @@
   },
   "customizations": {
     "vscode": {
-      "extensions": ["ms-python.python"]
+      "extensions": [
+        "ms-python.python"
+      ]
     }
   }
 }
