@@ -480,6 +480,40 @@ def add_to_wishlist():
 def api_cart_count():
     return jsonify({'count': get_cart_count()})
 
+# ---------- Session 购物车 API（未登录用户）----------
+@app.route('/cart/session/update/<int:product_id>', methods=['POST'])
+def update_session_cart():
+    """更新 session 购物车中商品数量（未登录用户）"""
+    data = request.get_json()
+    quantity = data.get('quantity', 1)
+    product_id = data.get('product_id')
+    if not product_id:
+        return jsonify({'success': False, 'error': '缺少商品ID'}), 400
+    
+    cart = session.get('cart', {})
+    if quantity <= 0:
+        cart.pop(str(product_id), None)
+    else:
+        cart[str(product_id)] = quantity
+    session['cart'] = cart
+    
+    # 重新计算总金额
+    items, total = get_cart_items()
+    return jsonify({
+        'success': True,
+        'new_quantity': quantity,
+        'cart_total': total,
+        'cart_count': sum(item['quantity'] for item in items)
+    })
+
+@app.route('/cart/session/remove/<int:product_id>', methods=['POST'])
+def remove_session_cart_item(product_id):
+    """从 session 购物车删除商品（未登录用户）"""
+    cart = session.get('cart', {})
+    cart.pop(str(product_id), None)
+    session['cart'] = cart
+    return jsonify({'success': True})
+
 # ---------- 初始化数据库和默认数据 ----------
 with app.app_context():
     db.create_all()
