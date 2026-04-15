@@ -2,20 +2,21 @@
   "name": "Pegasus Computer Store",
   "image": "mcr.microsoft.com/devcontainers/python:3.12",
   "workspaceFolder": "/workspaces/alfred-self929/pegasus_computer_store",
-  "postCreateCommand": "pip install -r requirements.txt",
-  "postStartCommand": "flask --debug run --host=0.0.0.0 --port=5000 &",
+  "postCreateCommand": "pip install -r requirements.txt && echo 'Dependencies installed'",
+  "postAttachCommand": {
+    "Start Flask": "export FLASK_APP=app.py && flask --debug run --host=0.0.0.0 --port=5000"
+  },
   "forwardPorts": [5000],
   "portsAttributes": {
     "5000": {
       "label": "Flask App",
-      "onAutoForward": "notify"
+      "onAutoForward": "notify",
+      "visibility": "public"
     }
   },
   "customizations": {
     "vscode": {
-      "extensions": [
-        "ms-python.python"
-      ]
+      "extensions": ["ms-python.python"]
     }
   }
 }
