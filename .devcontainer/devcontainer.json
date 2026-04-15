@@ -11,20 +11,21 @@
 }
 
 {
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "label": "Run Flask",
-      "type": "shell",
-      "command": "flask --debug run --host=0.0.0.0 --port=5000",
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "group": "none",
-      "presentation": {
-        "reveal": "always",
-        "panel": "new"
-      }
+  "name": "Flask App",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "workspaceFolder": "/workspaces/alfred-self929/pegasus_computer_store",
+  "postCreateCommand": "pip install -r requirements.txt",
+  "postStartCommand": "flask --debug run --host=0.0.0.0 --port=5000 &",
+  "forwardPorts": [5000],
+  "portsAttributes": {
+    "5000": {
+      "label": "Flask App",
+      "onAutoForward": "notify"
     }
-  ]
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-python.python"]
+    }
+  }
 }
