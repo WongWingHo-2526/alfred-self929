@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>飛馬電腦 - {% block title %}砌機電腦配件專門店{% endblock %}</title>
+    <title>飛機電腦 - {% block title %}砌機電腦配件專門店{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 </head>
 <body>
-    <!-- 顶部导航栏 -->
+    <!-- 頂部導航欄 -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container">
             <a class="navbar-brand fw-bold fs-3" href="{{ url_for('index') }}">
-                <i class="bi bi-pc-display"></i> 飛馬電腦
+                <i class="bi bi-pc-display"></i> 飛機電腦
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
                 <span class="navbar-toggler-icon"></span>
@@ -54,7 +54,7 @@
         </div>
     </nav>
 
-    <!-- 消息闪现 -->
+    <!-- 消息閃現 -->
     <div class="container mt-3">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% for category, message in messages %}
@@ -66,13 +66,13 @@
         {% endwith %}
     </div>
 
-    <!-- 主内容 -->
+    <!-- 主內容 -->
     {% block content %}{% endblock %}
 
-    <!-- 页脚 -->
+    <!-- 頁腳 -->
     <footer class="bg-dark text-white-50 mt-5 py-4">
         <div class="container text-center">
-            <p>&copy; 2026 飛馬電腦 | 砌機電腦配件專門店</p>
+            <p>&copy; 2026 飛機電腦 | 砌機電腦配件專門店</p>
             <p><small>ITP4115 雲端網頁應用開發課程作業</small></p>
         </div>
     </footer>

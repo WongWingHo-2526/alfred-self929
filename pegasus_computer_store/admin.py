@@ -1,4 +1,4 @@
-# admin.py - 完整后台管理模块
+# admin.py - 完整後台管理模塊
 import os
 import uuid
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify, current_app
@@ -9,23 +9,23 @@ from werkzeug.utils import secure_filename
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 
-# ---------- 辅助函数 ----------
+# ---------- 輔助函數 ----------
 def admin_required(func):
-    """管理员权限装饰器"""
+    """管理員權限裝飾器"""
     def wrapper(*args, **kwargs):
         if not current_user.is_authenticated or not current_user.is_admin:
-            flash('需要管理员权限', 'danger')
+            flash('需要管理員權限', 'danger')
             return redirect(url_for('index'))
         return func(*args, **kwargs)
     wrapper.__name__ = func.__name__
     return wrapper
 
 def allowed_file(filename):
-    """检查文件扩展名是否允许上传"""
+    """檢查文件擴展名是否允許上傳"""
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
 
-# ---------- 仪表板 ----------
+# ---------- 儀表板 ----------
 @admin_bp.route('/')
 @login_required
 @admin_required
@@ -42,7 +42,7 @@ def dashboard():
                          pending_orders=pending_orders,
                          recent_orders=recent_orders)
 
-# ---------- 用户管理 ----------
+# ---------- 用戶管理 ----------
 @admin_bp.route('/users')
 @login_required
 @admin_required
@@ -301,7 +301,7 @@ def batch_products():
     db.session.commit()
     return redirect(url_for('admin.admin_products'))
 
-# ---------- 订单管理 ----------
+# ---------- 訂單管理 ----------
 @admin_bp.route('/orders')
 @login_required
 @admin_required
@@ -328,7 +328,7 @@ def update_order_status(order_id, status):
         flash(f'訂單 #{order.order_number} 狀態已更新為 {status}', 'success')
     return redirect(url_for('admin.admin_orders'))
 
-# ---------- 分类管理 ----------
+# ---------- 分類管理 ----------
 @admin_bp.route('/categories')
 @login_required
 @admin_required
@@ -343,7 +343,7 @@ def add_category():
     name = request.form.get('name')
     slug = request.form.get('slug')
     if name and slug:
-        # 检查是否已存在
+        # 檢查是否已存在
         existing = Category.query.filter_by(slug=slug).first()
         if existing:
             flash('分類 URL 已存在', 'danger')
@@ -381,7 +381,7 @@ def update_category():
     category.sort_order = request.form.get('sort_order', 0, type=int)
     category.is_active = request.form.get('is_active') == '1'
 
-    # 防止将分类自身设为上级
+    # 防止將分類自身設為上級
     if category.parent_id == category.id:
         category.parent_id = None
 
