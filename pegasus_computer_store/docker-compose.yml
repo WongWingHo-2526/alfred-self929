@@ -1,0 +1,48 @@
+services:
+  web1:
+    build:
+      context: .
+      dockerfile: dockerfile
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+      - DATABASE_URL=postgresql+psycopg2://postgres:postgres@db:5432/pegasus
+      - SECRET_KEY=pegasus-computer-store-secret-key-change-in-production
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/home
+    depends_on:
+      - db
+    command: ["./start.sh"]
+
+  web2:
+    build:
+      context: .
+      dockerfile: dockerfile
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+      - DATABASE_URL=postgresql+psycopg2://postgres:postgres@db:5432/pegasus
+      - SECRET_KEY=pegasus-computer-store-secret-key-change-in-production
+      - DELAY=5
+    ports:
+      - "5001:5000"
+    volumes:
+      - .:/home
+    depends_on:
+      - db
+    command: ["./start.sh"]
+
+  db:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: pegasus
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
