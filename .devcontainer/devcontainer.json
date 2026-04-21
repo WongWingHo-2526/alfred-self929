@@ -9,6 +9,15 @@
       "label": "Flask App",
       "onAutoForward": "openPreview"
     }
+    ,
+    "5050": {
+      "label": "pgadmin",
+      "onAutoForward": "openPreview"
+    },
+    "8025": {
+      "label": "mailhog",
+      "onAutoForward": "openPreview"
+    }
   },
   "customizations": {
     "vscode": {

@@ -4,7 +4,7 @@ WORKDIR /home
 
 COPY requirements.txt requirements.txt
 RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN apt-get update RUN pip install -r requirements.txtRUN pip install -r requirements.txt apt-get install -y netcat-openbsd RUN pip install -r requirements.txtRUN pip install -r requirements.txt pip install -r requirements.txt
 RUN pip install gunicorn
 
 COPY . /home
