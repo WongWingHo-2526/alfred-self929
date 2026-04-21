@@ -1,8 +1,7 @@
 {
   "name": "Flask App",
   "image": "mcr.microsoft.com/devcontainers/python:3.12",
-  "workspaceFolder": "/workspaces/alfred-self929/pegasus_computer_store",
-  "postCreateCommand": "pip install -r requirements.txt && flask --debug run --host=0.0.0.0 --port=5000",
+  "postCreateCommand": "flask --debug run --host=0.0.0.0 --port=5000",
   "forwardPorts": [5000],
   "portsAttributes": {
     "5000": {
