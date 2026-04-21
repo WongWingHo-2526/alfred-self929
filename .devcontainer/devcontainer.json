@@ -1,7 +1,6 @@
 {
   "name": "Flask with Docker",
   "image": "mcr.microsoft.com/devcontainers/universal:2",
-  "workspaceFolder": "/workspaces/alfred-self929/pegasus_computer_store",
   "postCreateCommand": "",
   "postStartCommand": "flask --debug run --host=0.0.0.0 --port=5000",
   "forwardPorts": [5000],
