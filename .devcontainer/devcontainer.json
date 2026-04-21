@@ -1,8 +1,6 @@
 {
   "name": "Flask with Docker",
   "image": "mcr.microsoft.com/devcontainers/universal:2",
-  "workspaceFolder": "/workspaces/alfred-self929/pegasus_computer_store",
-  "postCreateCommand": "pip install -r requirements.txt",
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {}
   },
