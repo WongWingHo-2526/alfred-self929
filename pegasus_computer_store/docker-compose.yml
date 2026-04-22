@@ -3,17 +3,15 @@ services:
     build:
       context: .
       dockerfile: dockerfile
+    image: yeehimc/ea_project_final:latest
     environment:
       - FLASK_APP=app.py
-      - FLASK_ENV=production
-      - DATABASE_URL=postgresql+psycopg2://postgres:postgres@postgresdb:5432/pegasus
+      - FLASK_ENV=development
       - SECRET_KEY=pegasus-computer-store-secret-key-change-in-production
     ports:
       - "5000:5000"
     volumes:
       - .:/home
-    depends_on:
-      - postgresdb
     networks:
       - flask_app
     command: ["./start.sh"]
@@ -22,36 +20,40 @@ services:
     build:
       context: .
       dockerfile: dockerfile
+    image: yeehimc/ea_project_final:latest
     environment:
       - FLASK_APP=app.py
-      - FLASK_ENV=production
-      - DATABASE_URL=postgresql+psycopg2://postgres:postgres@postgresdb:5432/pegasus
+      - FLASK_ENV=development
       - SECRET_KEY=pegasus-computer-store-secret-key-change-in-production
+      - DELAY=5
     ports:
       - "5001:5000"
     volumes:
       - .:/home
-    depends_on:
-      - postgresdb
     networks:
       - flask_app
     command: ["./start.sh"]
 
-  postgresdb:
-    container_name: postgres_container
-    image: postgres
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_DB: pegasus
-      POSTGRES_PASSWORD: postgres
-      PGDATA: /data/postgres
-    volumes:
-      - postgres:/data/postgres
-    ports:
-      - "5432:5432"
-    networks:
-      - flask_app
-    restart: unless-stopped
+  # postgresdb:
+  #   container_name: postgres_container
+  #   image: postgres:15-alpine
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_DB: pegasus
+  #     POSTGRES_PASSWORD: postgres
+  #     PGDATA: /data/postgres
+  #   volumes:
+  #     - postgres:/data/postgres
+  #   ports:
+  #     - "5432:5432"
+  #   networks:
+  #     - flask_app
+  #   restart: unless-stopped
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U postgres -d pegasus"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
 
   pgadmin:
     container_name: pgadmin_container
