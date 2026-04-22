@@ -1,4 +1,5 @@
 #!/bin/bash
+#!/bin/bash
 # Wait for database to be ready
 echo "Waiting for database to be ready..."
 while ! nc -z postgresdb 5432; do
@@ -6,7 +7,9 @@ while ! nc -z postgresdb 5432; do
 done
 echo "Database is ready!"
 
-# Run database migrations if needed
+# Create database tables
+echo "Creating database tables..."
+python -c "from app import app, db; app.app_context().push(); db.create_all()"
 
-# Start the application
-exec flask run --host=0.0.0.0 --port=5000
+# Start the application with gunicorn
+exec gunicorn --bind 0.0.0.0:5000 app:app

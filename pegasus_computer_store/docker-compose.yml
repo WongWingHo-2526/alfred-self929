@@ -5,7 +5,7 @@ services:
       dockerfile: dockerfile
     environment:
       - FLASK_APP=app.py
-      - FLASK_ENV=development
+      - FLASK_ENV=production
       - DATABASE_URL=postgresql+psycopg2://postgres:postgres@postgresdb:5432/pegasus
       - SECRET_KEY=pegasus-computer-store-secret-key-change-in-production
     ports:
@@ -14,6 +14,8 @@ services:
       - .:/home
     depends_on:
       - postgresdb
+    networks:
+      - flask_app
     command: ["./start.sh"]
 
   web2:
@@ -22,16 +24,17 @@ services:
       dockerfile: dockerfile
     environment:
       - FLASK_APP=app.py
-      - FLASK_ENV=development
+      - FLASK_ENV=production
       - DATABASE_URL=postgresql+psycopg2://postgres:postgres@postgresdb:5432/pegasus
       - SECRET_KEY=pegasus-computer-store-secret-key-change-in-production
-      - DELAY=5
     ports:
       - "5001:5000"
     volumes:
       - .:/home
     depends_on:
       - postgresdb
+    networks:
+      - flask_app
     command: ["./start.sh"]
 
   postgresdb:
