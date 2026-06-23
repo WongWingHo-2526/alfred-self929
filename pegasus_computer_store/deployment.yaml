@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: project-web-deployment
+  labels:
+    app: project-web
+spec:
+  replicas: 2 # Fulfills Horizontal Scaling / High Availability marking item
+  selector:
+    matchLabels:
+      app: project-web
+  template:
+    metadata:
+      labels:
+        app: project-web
+    spec:
+      containers:
+      - name: web-app
+        image: yeehimc/ea_project_final:latest # Replace with your Docker image
+        ports:
+        - containerPort: 5000 # The port your Flask/Python app listens on
+        env:
+        - name: DB_HOST
+          value: "project-central-db.xxxxxx.us-east-1.rds.amazonaws.com" # Your RDS Endpoint
+        - name: DB_NAME
+          value: "pegasus"
