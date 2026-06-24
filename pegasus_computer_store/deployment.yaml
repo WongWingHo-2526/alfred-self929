@@ -21,6 +21,10 @@ spec:
         - containerPort: 5000 # The port your Flask/Python app listens on
         env:
         - name: DB_HOST
-          value: "project-central-db.xxxxxx.us-east-1.rds.amazonaws.com" # Your RDS Endpoint
+          value: "pegasus-aurora-cluster.cluster-xxxxxx.us-east-1.rds.amazonaws.com"
         - name: DB_NAME
           value: "pegasus"
+        - name: DB_USER
+          value: "admin"
+        - name: DB_PASSWORD
+          value: "SuperSecurePassword2026!" # Replace with your actual password or use Kubernetes Secrets for better security
