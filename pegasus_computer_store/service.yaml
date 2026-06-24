@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: project-web-service
+  name: flygay-computer-store-service
 spec:
   type: NodePort
   selector:
@@ -10,4 +10,4 @@ spec:
     - protocol: TCP
       port: 80         # Port exposed inside the cluster
       targetPort: 5000 # Port of your container
-      nodePort: 32000  # The exact port exposed on your EC2 instances for the ALB
+      nodePort: 32000  # The exact port exposed on your EC2 instances for the ALB 
