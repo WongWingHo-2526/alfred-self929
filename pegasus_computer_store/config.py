@@ -2,7 +2,23 @@ import os
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'pegasus-computer-store-secret-key-change-in-production')
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'sqlite:///pegasus.db')
+    
+    # ─── AWS RDS MYSQL MOUNTING ───────────────────────────────────────────────
+    db_host = os.environ.get('DB_HOST')
+    db_name = os.environ.get('DB_NAME')
+    db_user = os.environ.get('DB_USER')
+    db_pass = os.environ.get('DB_PASSWORD')
+
+    if db_host and db_user and db_pass and db_name:
+        # Clean trailing ports from the AWS endpoint string if present
+        clean_host = db_host.split(':')[0]
+        # Assemble the cloud connection URI string using PyMySQL
+        SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{db_user}:{db_pass}@{clean_host}/{db_name}"
+    else:
+        # Development fallback option
+        SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'sqlite:///pegasus.db')
+    # ──────────────────────────────────────────────────────────────────────────
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # Session配置
