@@ -24,7 +24,7 @@ class Config:
     # Session配置
     SESSION_COOKIE_NAME = 'pegasus_session'
     SESSION_COOKIE_HTTPONLY = True
-    SESSION_COOKIE_SECURE = True  # 開發環境設為False
+    SESSION_COOKIE_SECURE = False  # 開發環境設為False
     
     # 上傳文件配置
     UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/uploads')
