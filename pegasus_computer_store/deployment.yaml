@@ -5,7 +5,7 @@ metadata:
   labels:
     app: project-web
 spec:
-  replicas: 2 # Fulfills Horizontal Scaling / High Availability marking item
+  replicas: 4 # Match the HPA minimum starting total
   selector:
     matchLabels:
       app: project-web
@@ -14,6 +14,27 @@ spec:
       labels:
         app: project-web
     spec:
+      # CRITICAL: Forces Kubernetes to spread pods evenly across AZs
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: "topology.kubernetes.io/zone"
+          whenUnsatisfiable: DoNotSchedule # Ensures strict compliance per AZ
+          labelSelector:
+            matchLabels:
+              app: project-web
+      containers:
+      - name: web-app
+        image: yeehimc/ea_project_final:latest
+        ports:
+        - containerPort: 5000
+        # CRITICAL: HPA requires explicit resource requests to measure percentage usage
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
       containers:
       - name: web-app
         image: yeehimc/ea_project_final:latest # Replace with your Docker image
